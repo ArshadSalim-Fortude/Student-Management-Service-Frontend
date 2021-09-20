@@ -1,0 +1,162 @@
+<kendo-dialog
+    title="Upload Excel file"
+    *ngIf="uploadVisible"
+    (close)="closeUpload()"
+    [minWidth]="250"
+    [width]="600"
+>
+    <div>
+      <kendo-fileselect
+       (select)="selectEventHandler($event)"
+      >
+      </kendo-fileselect>
+      <br/>
+      <button
+        kendoButton
+        type="submit"
+        style="font-size: 16px"
+        *ngIf="uploadButtonShow"
+        (click)="onUpload()"
+      >
+        Upload
+      </button>
+    </div>
+</kendo-dialog>
+
+<kendo-dialog
+    title="Upload Excel file"
+    *ngIf="addStudVisible"
+    (close)="closeAddStud()"
+    [minWidth]="250"
+    [width]="600"
+>
+<div>
+    <form class="k-form" [formGroup]="form" (ngSubmit)="addStudent()">
+      <fieldset class="k-form-fieldset">
+        <kendo-formfield>
+          <kendo-label [for]="firstName" text="First Name"></kendo-label>
+          <kendo-textbox
+            formControlName="firstName"
+            [clearButton]="true"
+            #firstName
+            required
+          ></kendo-textbox>
+          <kendo-formerror>Error: First name is required</kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+          <kendo-label [for]="lastName" text="Last Name"></kendo-label>
+          <kendo-textbox
+            formControlName="lastName"
+            [clearButton]="true"
+            #lastName
+            required
+          ></kendo-textbox>
+          <kendo-formerror>Error: Last name is required</kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+          <kendo-label [for]="email" text="Email"></kendo-label>
+          <kendo-textbox
+            formControlName="email"
+            [clearButton]="true"
+            #email
+            required
+          ></kendo-textbox>
+          <kendo-formerror>Error: Email is required</kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+          <kendo-label [for]="grade" text="Grade"></kendo-label>
+          <kendo-textbox
+            formControlName="grade"
+            [clearButton]="true"
+            #grade
+            required
+          ></kendo-textbox>
+          <kendo-formerror>Error: Grade/Class is required</kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+          <kendo-label [for]="division" text="Division"></kendo-label>
+          <kendo-textbox
+            formControlName="division"
+            [clearButton]="true"
+            #division
+            required
+          ></kendo-textbox>
+          <kendo-formerror>Error: Division is required</kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+          <kendo-label [for]="dob" text="Date of Birth"></kendo-label>
+          <kendo-dateinput
+            formControlName="dob"
+            [format]="format"
+            #dob
+            required
+          ></kendo-dateinput>
+          <kendo-formerror>Error: Date of Birth is required</kendo-formerror>
+        </kendo-formfield>
+        <div class="k-form-buttons row">
+          <div class="col-md-6 text-end">
+            <button
+              class="k-button k-primary"
+              type="submit"
+              style="font-size: 20px"
+            >
+              Add Student
+            </button>
+          </div>
+          <div class="col-md-4">
+            <button
+              class="k-button"
+              (click)="clearForm()"
+              style="font-size: 20px"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</kendo-dialog>
+
+<div class="studentbody">
+    <br/>
+    <div>
+        <h1 style="text-align: center;">STUDENT MANAGEMENT</h1>
+    </div>
+    <kendo-card width="auto" class="studentcard">
+        <kendo-card-header>
+            <div style="position: relative;">
+                <span style="margin-left: 50%; font-size: 20px;">Student list</span>
+                <div style="float: right;">
+                    <button kendoButton (click)="openAddStud()">Add Student</button>
+                    <button kendoButton (click)="openUpload()">Upload Excel Sheet</button>
+                </div>
+            </div>
+        </kendo-card-header>
+        <kendo-card-body>
+            <br/>
+            <kendo-grid [data]="students" [height]="400">
+                <kendo-grid-column field="firstName" title="First Name"></kendo-grid-column>
+                <kendo-grid-column field="lastName" title="Last Name"></kendo-grid-column>
+                <kendo-grid-column field="email" title="Email"></kendo-grid-column>
+                <kendo-grid-column field="dob" title="Date Of Birth">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.dob | date }}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="age" title="Age"></kendo-grid-column>
+                <kendo-grid-column field="grade" title="Grade"></kendo-grid-column>
+                <kendo-grid-column field="division" title="Division"></kendo-grid-column>
+                <kendo-grid-command-column title="Action">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <button kendoButton>Edit</button>
+                        <button kendoButton (click)="deleteStudent(dataItem.studentId)">Delete</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+            </kendo-grid>
+        </kendo-card-body>
+        <kendo-card-footer>
+    
+        </kendo-card-footer>
+    </kendo-card>
+</div>
