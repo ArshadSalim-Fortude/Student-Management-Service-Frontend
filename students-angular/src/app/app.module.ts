@@ -19,6 +19,9 @@ import { FileSelectModule } from '@progress/kendo-angular-upload';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { LabelModule } from '@progress/kendo-angular-label';
+import { IntlModule } from "@progress/kendo-angular-intl";
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { NotificationModule } from '@progress/kendo-angular-notification';
 
 
 
@@ -46,7 +49,10 @@ import { LabelModule } from '@progress/kendo-angular-label';
     FileSelectModule,
     InputsModule,
     DateInputsModule,
-    LabelModule
+    LabelModule,
+    IntlModule,
+    PopupModule,
+    NotificationModule
   ],
   providers: [
     {

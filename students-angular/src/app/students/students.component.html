@@ -1,36 +1,33 @@
 <kendo-dialog
-    title="Upload Excel file"
-    *ngIf="uploadVisible"
-    (close)="closeUpload()"
-    [minWidth]="250"
-    [width]="600"
+  title="Upload Excel file"
+  *ngIf="uploadVisible"
+  (close)="closeUpload()"
+  [minWidth]="250"
+  [width]="600"
 >
-    <div>
-      <kendo-fileselect
-       (select)="selectEventHandler($event)"
-      >
-      </kendo-fileselect>
-      <br/>
-      <button
-        kendoButton
-        type="submit"
-        style="font-size: 16px"
-        *ngIf="uploadButtonShow"
-        (click)="onUpload()"
-      >
-        Upload
-      </button>
-    </div>
+  <div>
+    <kendo-fileselect (select)="selectEventHandler($event)"> </kendo-fileselect>
+    <br />
+    <button
+      kendoButton
+      type="submit"
+      style="font-size: 16px"
+      *ngIf="uploadButtonShow"
+      (click)="onUpload()"
+    >
+      Upload
+    </button>
+  </div>
 </kendo-dialog>
 
 <kendo-dialog
-    title="Upload Excel file"
-    *ngIf="addStudVisible"
-    (close)="closeAddStud()"
-    [minWidth]="250"
-    [width]="600"
+  title="Upload Excel file"
+  *ngIf="addStudVisible"
+  (close)="closeAddStud()"
+  [minWidth]="250"
+  [width]="600"
 >
-<div>
+  <div>
     <form class="k-form" [formGroup]="form" (ngSubmit)="addStudent()">
       <fieldset class="k-form-fieldset">
         <kendo-formfield>
@@ -119,44 +116,104 @@
 </kendo-dialog>
 
 <div class="studentbody">
-    <br/>
-    <div>
-        <h1 style="text-align: center;">STUDENT MANAGEMENT</h1>
-    </div>
-    <kendo-card width="auto" class="studentcard">
-        <kendo-card-header>
-            <div style="position: relative;">
-                <span style="margin-left: 50%; font-size: 20px;">Student list</span>
-                <div style="float: right;">
-                    <button kendoButton (click)="openAddStud()">Add Student</button>
-                    <button kendoButton (click)="openUpload()">Upload Excel Sheet</button>
-                </div>
-            </div>
-        </kendo-card-header>
-        <kendo-card-body>
-            <br/>
-            <kendo-grid [data]="students" [height]="400">
-                <kendo-grid-column field="firstName" title="First Name"></kendo-grid-column>
-                <kendo-grid-column field="lastName" title="Last Name"></kendo-grid-column>
-                <kendo-grid-column field="email" title="Email"></kendo-grid-column>
-                <kendo-grid-column field="dob" title="Date Of Birth">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        {{ dataItem.dob | date }}
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column field="age" title="Age"></kendo-grid-column>
-                <kendo-grid-column field="grade" title="Grade"></kendo-grid-column>
-                <kendo-grid-column field="division" title="Division"></kendo-grid-column>
-                <kendo-grid-command-column title="Action">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <button kendoButton>Edit</button>
-                        <button kendoButton (click)="deleteStudent(dataItem.studentId)">Delete</button>
-                    </ng-template>
-                </kendo-grid-command-column>
-            </kendo-grid>
-        </kendo-card-body>
-        <kendo-card-footer>
-    
-        </kendo-card-footer>
-    </kendo-card>
+  <ng-template #templates>
+    <h5>Excel Added...Please Refresh!</h5>
+  </ng-template>
+  <br />
+  <div>
+    <h1 style="text-align: center">STUDENT MANAGEMENT</h1>
+  </div>
+  <kendo-card width="auto" class="studentcard">
+    <kendo-card-header>
+      <div style="position: relative">
+        <span style="margin-left: 50%; font-size: 20px">Student list</span>
+        <div style="float: right">
+          <button kendoButton (click)="openAddStud()">Add Student</button>
+          <button kendoButton (click)="openUpload()">Upload Excel Sheet</button>
+        </div>
+      </div>
+    </kendo-card-header>
+    <kendo-card-body>
+      <br />
+      <kendo-grid 
+        [data]="gridView" 
+        [height]="400"
+        (edit)="editHandler($event)"
+        (save)="saveHandler($event)"
+        (cancel)="cancelHandler($event)"
+        [pageSize]="pageSize"
+        [skip]="skip"
+        [pageable]="true"
+        (pageChange)="pageChange($event)"
+      >
+        <kendo-grid-column
+          field="firstName"
+          title="First Name"
+          editor="text"
+        ></kendo-grid-column>
+        <kendo-grid-column
+          field="lastName"
+          title="Last Name"
+          editor="text"
+        ></kendo-grid-column>
+        <kendo-grid-column 
+          field="email" 
+          title="Email"
+          editor="text"
+        ></kendo-grid-column>
+        <kendo-grid-column 
+          field="dob" 
+          title="Date Of Birth"
+          
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem.dob | date }}
+          </ng-template>
+          <ng-template kendoGridEditTemplate let-dataItem>
+            <kendo-datepicker [(value)] = "value" (valueChange)="onDateChange($event)" format="dd/MM/yyyy"></kendo-datepicker>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column 
+          field="age" 
+          title="Age"
+        ></kendo-grid-column>
+        <kendo-grid-column 
+          field="grade" 
+          title="Grade"
+          editor="text"
+        ></kendo-grid-column>
+        <kendo-grid-column
+          field="division"
+          title="Division"
+          editor="text"
+        ></kendo-grid-column>
+        <kendo-grid-command-column 
+          title="Action"
+        >
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <button kendoGridEditCommand kendoButton>
+              Edit
+            </button>
+            <button kendoGridSaveCommand kendoButton>
+              Save
+            </button>
+            <button kendoGridCancelCommand>
+              Cancel
+            </button>
+            <ng-template #template>
+              <p>Are you sure you want to delete?</p>
+              <span>
+                <button (click)="deleteStudent(dataItem.studentId)">Yes</button>
+                <button (click)="popUpClose()">No</button>
+              </span>
+            </ng-template>
+            <button kendoButton *ngIf="deleteVisible" #anchor (click)="togglePopup(template,anchor)">
+              Delete
+            </button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </kendo-card-body>
+    <kendo-card-footer> </kendo-card-footer>
+  </kendo-card>
 </div>
