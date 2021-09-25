@@ -13,6 +13,7 @@ import {Apollo, gql} from 'apollo-angular'
 
 
 fdescribe('StudentsService', () => {
+  let studentsService: StudentsService
   let studentsServiceSpy: jasmine.SpyObj<StudentsService>;
   let apollo: Apollo;
   let apolloTestingController: ApolloTestingController;
@@ -268,7 +269,7 @@ fdescribe('StudentsService', () => {
     apolloTestingController.verify();  
   });
 
-  it('should be created', () => {
+  it('students service should be created', () => {
     expect(studentsServiceSpy).toBeTruthy();
   });
 
